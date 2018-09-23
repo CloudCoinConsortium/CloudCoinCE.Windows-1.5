@@ -94,7 +94,6 @@ namespace CloudCoinClient.CoreClasses
                 Directory.CreateDirectory(LogsFolder);
                 Directory.CreateDirectory(QRFolder);
                 Directory.CreateDirectory(BarCodeFolder);
-                Directory.CreateDirectory(CSVFolder);
                 Directory.CreateDirectory(ResponseFolder);
 
             }
@@ -113,7 +112,7 @@ namespace CloudCoinClient.CoreClasses
         public override void LoadFileSystem()
         {
             importCoins = LoadFolderCoins(ImportFolder);
-            var csvCoins = LoadCoinsByFormat(ImportFolder +Path.DirectorySeparatorChar + "CSV", Formats.CSV);
+
             var qrCoins = LoadCoinsByFormat(ImportFolder + Path.DirectorySeparatorChar + "QrCodes", Formats.QRCode);
             var BarCodeCoins = LoadCoinsByFormat(ImportFolder + Path.DirectorySeparatorChar + "Barcodes", Formats.BarCode);
 
@@ -139,6 +138,16 @@ namespace CloudCoinClient.CoreClasses
             dangerousCoins = LoadFolderCoins(DangerousFolder);
 
         }
+
+        public void LoadFileSystemForExport()
+        {
+            //exportCoins = LoadFolderCoins(ExportFolder);
+            bankCoins = LoadFolderCoins(BankFolder);
+            frackedCoins = LoadFolderCoins(FrackedFolder);
+            //counterfeitCoins = LoadFolderCoins(CounterfeitFolder);
+
+        }
+
 
 
         public override void DetectPreProcessing()

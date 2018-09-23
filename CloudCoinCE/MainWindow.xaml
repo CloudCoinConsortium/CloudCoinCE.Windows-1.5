@@ -130,7 +130,7 @@
 
             <StackPanel  Margin="{StaticResource Margin.Main.Top}" Grid.Column="1" Grid.Row="2" Height="780" Orientation="Vertical">
                 <StackPanel Height="60" Orientation="Horizontal"  >
-                    <uc:ImageButton x:Name="cmdPown" Click="cmdPown_Click" BorderThickness="1,1,0,1" Content="POWN NEW" ImageHover="Images/Addicon_white.png" Image="Images/Addicon_yellow.png"  ImageWidth="25" Width="{StaticResource Button.Width.Header}" CornerRadius="{StaticResource CornerRadius.RoundLeft}" HorizontalAlignment="Center"></uc:ImageButton>
+                    <uc:ImageButton x:Name="cmdPown" Click="cmdPown_Click" BorderThickness="1,1,0,1" Content="DEPOSIT" ImageHover="Images/Addicon_white.png" Image="Images/Addicon_yellow.png"  ImageWidth="25" Width="{StaticResource Button.Width.Header}" CornerRadius="{StaticResource CornerRadius.RoundLeft}" HorizontalAlignment="Center"></uc:ImageButton>
 
                     <Border BorderThickness="0,1,0,1" Background="#4C50AB" BorderBrush="#5a5fc9">
                         <StackPanel Orientation="Horizontal" >
@@ -148,7 +148,7 @@
                         </StackPanel>
                     </Border>
 
-                    <uc:ImageButton x:Name="cmdRefresh" Click="cmdRefresh_Click" BorderThickness="0,1,0,1" Content="REFRESH" ImageHover="Images/Refreshicon_white.png" Image="Images/Refreshicon_yellow.png"  ImageWidth="25" Width="{StaticResource Button.Width.Header}"  HorizontalAlignment="Center"></uc:ImageButton>
+                    <uc:ImageButton x:Name="cmdRefresh" Click="cmdRefresh_Click" BorderThickness="0,1,0,1" Content="ECHO RAIDA" ImageHover="Images/Refreshicon_white.png" Image="Images/Refreshicon_yellow.png"  ImageWidth="25" Width="{StaticResource Button.Width.Header}"  HorizontalAlignment="Center"></uc:ImageButton>
 
                     <Border BorderThickness="0,1,0,1" Background="#4C50AB" BorderBrush="#5a5fc9">
                         <StackPanel Orientation="Horizontal" >
@@ -220,7 +220,7 @@
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <Border Background="{TemplateBinding Background}" CornerRadius="{StaticResource CornerRadius.RoundRight}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock  x:Name="lblExportTotal" Margin="30,0,20,0" FontSize="16"  VerticalAlignment="Center"  >EXPORT</TextBlock>
+                                                    <TextBlock  x:Name="lblExportTotal" Margin="30,0,20,0" FontSize="16"  VerticalAlignment="Center"  >WITHDRAW</TextBlock>
                                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.FontSize="{TemplateBinding FontSize}"/>
                                                 </StackPanel>
                                             </Border>

@@ -36,7 +36,7 @@ namespace CloudCoinCE
         public EventHandler RefreshCoins;
         public static RAIDA raida;
         public static string[] countries = new String[] { "Australia", "Macedonia", "Philippines", "Serbia", "Bulgaria", "Russia", "Switzerland", "United Kingdom", "Punjab", "India", "Croatia", "USA", "India", "Taiwan", "Moscow", "St.Petersburg", "Columbia", "Singapore", "Germany", "Canada", "Venezuela", "Hyperbad", "USA", "Ukraine", "Luxenburg" };
-
+        Frack_Fixer fixer;
         public static String rootFolder = AppDomain.CurrentDomain.BaseDirectory;
         
         public static int exportOnes = 0;
@@ -76,10 +76,17 @@ namespace CloudCoinCE
             
             showDisclaimer();
             rootFolder = getWorkspace();
+
             raida = RAIDA.GetInstance();
             raida.FS =  RAIDA.FileSystem = FS =  new FileSystem(rootFolder);
+            FS.CreateDirectories();
             FS.LoadFileSystem();
             logger = new SimpleLogger(FS.LogsFolder + "logs" + DateTime.Now.ToString("yyyyMMdd").ToLower() + ".log", true);
+            fixer = new Frack_Fixer(FS, timeout);
+            UpdateCELog("");
+            printStarLine();
+            UpdateCELog("Starting CloudCoin CE at "+ DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss"));
+            printStarLine();
             SetupRAIDA();
             RAIDA.window = this;
             InitializeComponent();
@@ -128,7 +135,8 @@ namespace CloudCoinCE
             ShowCoins();
 
             new Thread(delegate () {
-                fix();
+                Task.Delay(20000).ContinueWith(t => fix());
+                //fix();
 
             }).Start();
 
@@ -216,12 +224,13 @@ namespace CloudCoinCE
                 return;
             }
 
+            UpdateCELog("  Fracked coins present in Fracked folder!Frack Fixing in progress! DO NOT TURN OFF CloudCoinCE application!!!!");
             UpdateCELog("  Fixing fracked coins can take many minutes.");
             UpdateCELog("  If your coins are not completely fixed, fix fracked again.");
 
             UpdateCELog("  Attempting to fix all fracked coins.");
 
-            Frack_Fixer fixer = new Frack_Fixer(FS, timeout);
+            //Frack_Fixer fixer = new Frack_Fixer(FS, timeout);
             fixer.FixAll();
 
         }//end fix
@@ -446,11 +455,12 @@ namespace CloudCoinCE
             //Properties.Settings.Default["FirstRun"] = false;
 
             bool firstRun = (bool)Properties.Settings.Default["FirstRun"];
-            if (firstRun == false)
+            if (firstRun == true)
+            //if(true)
             {
                 //First application run
                 //Update setting
-                Properties.Settings.Default["FirstRun"] = true;
+                Properties.Settings.Default["FirstRun"] = false;
                 //Save setting
                 Properties.Settings.Default.Save();
 
@@ -465,13 +475,28 @@ namespace CloudCoinCE
             }
         }
 
-        
+        private static void printStarLine()
+        {
+            logger.Info("********************************************************************************");
+
+        }
         private void printWelcome()
         {
             updateLog("CloudCoin Consumers Edition");
-            updateLog("Version " + DateTime.Now.ToShortDateString());
-            updateLog("Used to Authenticate ,Store,Payout CloudCoins");
-            updateLog("This Software is provided as is with all faults, defects and errors, and without warranty of any kind.Free from the CloudCoin Consortium.");
+            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.4");
+            updateLog("Used to Authenticate ,Store,Payout CloudCoins.");
+            updateLog("This Software is provided as is, with all faults, defects, errors and without warranty of any kind. Free from the CloudCoin Consortium.");
+
+            printStarLine();
+            UpdateCELog("                                                                  ");
+            UpdateCELog("                   CloudCoin CE Edition                           ");
+            UpdateCELog(String.Format("                      Version: {0}                        ", "1.5.0.0 "+DateTime.Now.ToString("dd.MMM.yyyy")));
+            UpdateCELog("          Used to Authenticate, Store and Payout CloudCoins       ");
+            UpdateCELog("      This Software is provided as is with all faults, defects    ");
+            UpdateCELog("          and errors, and without warranty of any kind.           ");
+            UpdateCELog("                Free from the CloudCoin Consortium.               ");
+            //Console.Out.WriteLine("                            Network Number " + NetworkNumber + "                      ");
+            printStarLine();
         }
         private void loadJson()
         {
@@ -533,8 +558,13 @@ namespace CloudCoinCE
             if (silent)
             {
                 updateLog("----------------------------------");
-                updateLog(String.Format("Starting Echo to RAIDA Network {0}", 1));
+                updateLog(String.Format("Starting Echo to RAIDA"));
                 updateLog("----------------------------------");
+
+                UpdateCELog("----------------------------------");
+                UpdateCELog(String.Format("Starting Echo to RAIDA"));
+                UpdateCELog("----------------------------------");
+
             }
             var echos = RAIDA.GetInstance().GetEchoTasks();
             raida = RAIDA.GetInstance();
@@ -542,9 +572,14 @@ namespace CloudCoinCE
             await Task.WhenAll(echos.AsParallel().Select(async task => await task()));
             if (silent)
             {
-                updateLog("Ready Count -" + raida.ReadyCount);
-                updateLog("Not Ready Count -" + raida.NotReadyCount);
+                updateLog("Ready Count: " + raida.ReadyCount);
+                updateLog("Not Ready Count: " + raida.NotReadyCount);
                 updateLog("-----------------------------------");
+
+                UpdateCELog("Ready Count: " + raida.ReadyCount);
+                UpdateCELog("Not Ready Count: " + raida.NotReadyCount);
+                UpdateCELog("-----------------------------------");
+
             }
 
             App.Current.Dispatcher.Invoke(delegate
@@ -559,7 +594,10 @@ namespace CloudCoinCE
 
         private void cmdBackup_Click(object sender, RoutedEventArgs e)
         {
+            UpdateCELog("  User Input : Backup");
+            printStarLine();
             backup();
+            printStarLine();
         }
 
         public void Backup(string TargetLocation)
@@ -571,17 +609,18 @@ namespace CloudCoinCE
                 if (bankCoins.Count() == 0)
                 {
                     updateLog("No Coins available for backup.");
+                    UpdateCELog("No Coins available for backup.");
                     MessageBox.Show("No Coins available for backup.");
                     return;
                 }
                 string FileName = TargetLocation + System.IO.Path.DirectorySeparatorChar + "CloudCoinsBackup" + DateTime.Now.ToString("yyyyMMddhhmmss").ToLower();
                 FS.WriteCoinsToFile(bankCoins, FileName, ".stack");
                 MessageBox.Show("Backup completed successfully.");
-                Console.WriteLine("CloudCoins Backup successful");
+                UpdateCELog("CloudCoins Backed up to " + FileName +" successful");
             }
             else
             {
-                Console.WriteLine("The target location does not exist.");
+                UpdateCELog("The target location does not exist.");
             }
         }
         private void backup()
@@ -601,11 +640,15 @@ namespace CloudCoinCE
 
         private void cmdShowFolders_Click(object sender, RoutedEventArgs e)
         {
+            UpdateCELog("  User Input : Show Folders");
+
             Process.Start(FS.RootPath);
         }
 
         private void cmdRefresh_Click(object sender, RoutedEventArgs e)
         {
+            ShowCoins();
+            UpdateCELog("  User Input : Echo RAIDA");
             SetLEDFlashing(true);
           
             new Thread(async delegate () {
@@ -699,6 +742,13 @@ namespace CloudCoinCE
 
         private void cmdPown_Click(object sender, RoutedEventArgs e)
         {
+            UpdateCELog("  User Input : Deposit");
+            printStarLine();
+            updateLog("Starting CloudCoin Import.");
+            updateLog("  Please do not close the CloudCoin CE program until it is finished.");
+            updateLog("  Otherwise it may result in loss of CloudCoins.");
+            printStarLine();
+
             int count = FS.LoadFolderCoins(FS.ImportFolder).Count();
 
             if (count == 0)
@@ -760,6 +810,9 @@ namespace CloudCoinCE
             new Thread(async () =>
             {
                 Thread.CurrentThread.IsBackground = true;
+                fixer.continueExecution = false;
+                UpdateCELog("Starting Detect..");
+                printStarLine();
                 await RAIDA.ProcessCoins(true);
                 ShowCoins();
             }).Start();
@@ -814,6 +867,13 @@ namespace CloudCoinCE
         }
         public void export()
         {
+            UpdateCELog("  User Input : Withdraw");
+            printStarLine();
+            UpdateCELog("Starting CloudCoin Export.");
+            UpdateCELog("  Please do not close the CloudCoin CE program until it is finished.");
+            UpdateCELog("  Otherwise it may result in loss of CloudCoins.");
+            printStarLine();
+
             if (rdbJpeg.IsChecked == true)
                 exportJpegStack = 1;
             else
@@ -887,7 +947,10 @@ namespace CloudCoinCE
                     if (fileGenerated)
                     {
                         updateLog("CloudCoin exported as Jpeg to " + OutputFile);
+                        UpdateCELog("CloudCoin exported as Jpeg to " + OutputFile);
+
                         Console.WriteLine("CloudCoin exported as Jpeg to " + OutputFile);
+                        printStarLine();
                     }
                 }
 
@@ -911,7 +974,9 @@ namespace CloudCoinCE
                     }//end if file exists
 
                     FS.WriteCoinsToFile(exportCoins, filename, ".stack");
-                    Console.WriteLine("Coins exported as stack file to " + filename);
+                    updateLog("Coins exported as stack file to " + filename);
+                    UpdateCELog("Coins exported as stack file to " + filename);
+                    printStarLine();
                     FS.RemoveCoins(exportCoins, FS.BankFolder);
                     FS.RemoveCoins(exportCoins, FS.FrackedFolder);
                 }
@@ -924,7 +989,9 @@ namespace CloudCoinCE
 
                         FS.RemoveCoins(exportCoins, FS.BankFolder);
                         FS.RemoveCoins(exportCoins, FS.FrackedFolder);
-                        Console.WriteLine("CloudCoin exported as Stack to " + OutputFile);
+                        UpdateCELog("CloudCoin exported as Stack to " + OutputFile);
+
+                        printStarLine();
                         updateLog("CloudCoin exported as Stack to " + OutputFile);
                     }
 
@@ -976,14 +1043,15 @@ namespace CloudCoinCE
 
         private void cmdExport_Click(object sender, RoutedEventArgs e)
         {
-            string sMessageBoxText = "Are you sure you want to export CloudCoins?";
-            string sCaption = "Export CloudCoins";
+
+            string sMessageBoxText = "Are you sure you want to withdraw CloudCoins?";
+            string sCaption = "Withdraw CloudCoins";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
 
             MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
-
+            FS.LoadFileSystemForExport();
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
@@ -994,26 +1062,33 @@ namespace CloudCoinCE
 
         private void cmdWorkspace_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            string sMessageBoxText = "Do you want to Change CloudCoin Workspace? This will change the working directory and you will see 0 coins. Your coins will not be lost however. You will be able to see them again when you revert to old workspace.";
+            string sCaption = "Change Workspace";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    string sMessageBoxText = "Do you want to Change CloudCoin Folder?";
-                    string sCaption = "Change Directory";
-
-                    MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
-                    MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
-
-                    MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
-
-                    switch (rsltMessageBox)
-                    {
-                        case MessageBoxResult.Yes:
+                    
                             /* ... */
                             // lblDirectory.Text = dialog.SelectedPath;
+                            UpdateCELog("  User Input : Change Workspace");
+                            //FS.RootPath = dialog.SelectedPath;
+                            //FS.CreateFolderStructure();
                             Properties.Settings.Default.WorkSpace = dialog.SelectedPath + System.IO.Path.DirectorySeparatorChar;
                             Properties.Settings.Default.Save();
+                            printStarLine();
+                            UpdateCELog("Workspace Changed to " + dialog.SelectedPath);
+                            printStarLine();
                             FileSystem fileUtils = new FileSystem(Properties.Settings.Default.WorkSpace);
                             fileUtils.CreateDirectories();
                             string[] fileNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
@@ -1031,23 +1106,24 @@ namespace CloudCoinCE
                                     }
                                     catch (Exception ex)
                                     {
-
+                                        logger.Error(ex.Message);
                                     }
                                 }
                             }
                             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
                             Application.Current.Shutdown();
-                            break;
-
-                        case MessageBoxResult.No:
-                            /* ... */
-                            break;
-
-                        case MessageBoxResult.Cancel:
-                            /* ... */
-                            break;
-                    }
+                            
                 }
+            }
+                    break;
+
+                case MessageBoxResult.No:
+                    /* ... */
+                    break;
+
+                case MessageBoxResult.Cancel:
+                    /* ... */
+                    break;
             }
 
         }
