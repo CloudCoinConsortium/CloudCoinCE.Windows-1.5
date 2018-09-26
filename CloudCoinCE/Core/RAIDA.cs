@@ -218,6 +218,34 @@ namespace CloudCoinCore
 
             IFileSystem.predetectCoins = predetectCoins;
 
+            #region Check Existing coins and skip them
+
+            IEnumerable<CloudCoin> bankCoins = IFileSystem.bankCoins;
+            IEnumerable<CloudCoin> frackedCoins1 = IFileSystem.frackedCoins;
+
+            var bCoins = bankCoins.ToList();
+            bCoins.AddRange(frackedCoins1);
+            //bankCoins.ToList().AddRange(frackedCoins1);
+
+            var totalBankCoins = bCoins;
+
+            var snList = (from x in totalBankCoins
+                          where x.nn == NetworkNumber
+                          select x.sn).ToList();
+
+            var newCoins = from x in predetectCoins where !snList.Contains(x.sn) select x;
+            var existingCoins = from x in predetectCoins where snList.Contains(x.sn) select x;
+
+            foreach (var coin in existingCoins)
+            {
+                updateLog("Found coin SN:" + coin.sn + " in folders. Skipping detection of the coin SN:" + coin.sn);
+                FS.MoveFile(FS.PreDetectFolder + coin.FileName + ".stack", FS.TrashFolder + coin.FileName + ".stack", IFileSystem.FileMoveOptions.Replace);
+            }
+
+            predetectCoins = newCoins.ToList();
+
+            #endregion
+
             RAIDA raida = (from x in networks
                            where x.NetworkNumber == NetworkNumber
                            select x).FirstOrDefault();
@@ -266,6 +294,7 @@ namespace CloudCoinCore
                             coin.response[k] = raida.nodes[k].MultiResponse.responses[j];
                             coin.pown += coin.response[k].outcome.Substring(0, 1);
                         }
+                       // coin.pown = "ppppppppppppppppppppppppp";
                         int countp = coin.response.Where(x => x.outcome == "pass").Count();
                         int countf = coin.response.Where(x => x.outcome == "fail").Count();
                         coin.PassCount = countp;
@@ -366,6 +395,7 @@ namespace CloudCoinCore
             updateLog("Total Lost Coins - " + lostCoins.Count() + "");
             updateLog("Total Suspect Coins - " + suspectCoins.Count() + "");
             updateLog("Total Dangerous Coins - " + dangerousCoins.Count() + "");
+            updateLog("Total Skipped Coins - " + existingCoins.Count() + "");
 
             pge.MinorProgress = 100;
             Debug.WriteLine("Minor Progress- " + pge.MinorProgress);

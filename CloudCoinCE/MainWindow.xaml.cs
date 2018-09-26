@@ -760,8 +760,19 @@ namespace CloudCoinCE
             printStarLine();
 
             int count = FS.LoadFolderCoins(FS.ImportFolder).Count();
+            var importCoins = FS.LoadFolderCoins(FS.ImportFolder);
 
-            if (count == 0)
+            var qrCoins = FS.LoadCoinsByFormat(FS.ImportFolder + System.IO.Path.DirectorySeparatorChar + "QrCodes", Formats.QRCode);
+            var BarCodeCoins = FS.LoadCoinsByFormat(FS.ImportFolder + System.IO.Path.DirectorySeparatorChar + "Barcodes", Formats.BarCode);
+
+            // Add Additional File formats if present
+            //importCoins = importCoins.Concat(csvCoins);
+            //importCoins = importCoins.Concat(BarCodeCoins);
+            //importCoins = importCoins.Concat(qrCoins);
+
+           
+
+            if (importCoins.Count + BarCodeCoins.Count + qrCoins.Count == 0)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Cloudcoins (*.stack, *.jpg,*.jpeg)|*.stack;*.jpg;*.jpeg|Stack files (*.stack)|*.stack|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
@@ -942,17 +953,19 @@ namespace CloudCoinCE
             if (file_type == 1)
             {
                 String filename = (FS.ExportFolder + System.IO.Path.DirectorySeparatorChar + totalSaved + ".CloudCoins." + tag + "");
-                if (File.Exists(filename))
-                {
-                    // tack on a random number if a file already exists with the same tag
-                    Random rnd = new Random();
-                    int tagrand = rnd.Next(999);
-                    filename = (FS.ExportFolder + System.IO.Path.DirectorySeparatorChar + totalSaved + ".CloudCoins." + tag + tagrand + "");
-                }//end if file exists
-
+               
+                
                 foreach (var coin in exportCoins)
                 {
                     string OutputFile = FS.ExportFolder + coin.FileName + tag + ".jpg";
+                    if (File.Exists(OutputFile))
+                    {
+                        // tack on a random number if a file already exists with the same tag
+                        Random rnd = new Random();
+                        int tagrand = rnd.Next(999);
+                        OutputFile = FS.ExportFolder + coin.FileName + tag + tagrand + ".jpg" ;
+                    }//end if file exists
+
                     bool fileGenerated = FS.WriteCoinToJpeg(coin, FS.GetCoinTemplate(coin), OutputFile, "");
                     if (fileGenerated)
                     {
@@ -975,7 +988,7 @@ namespace CloudCoinCE
                 if (stack_type == 1)
                 {
                     String filename = (FS.ExportFolder + System.IO.Path.DirectorySeparatorChar + totalSaved + ".CloudCoins." + tag + "");
-                    if (File.Exists(filename))
+                    if (File.Exists(filename + ".stack"))
                     {
                         // tack on a random number if a file already exists with the same tag
                         Random rnd = new Random();
