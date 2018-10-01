@@ -173,27 +173,32 @@
                 <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
                     <StackPanel Orientation="Vertical" >
                         <local:NoteUserControl x:Name="noteOne" NoteCount="10" Note="Images\Jpeg1.png" Symbol="Images\Layer_1.png" Margin="0,0,0,8" Width="190"  ></local:NoteUserControl>
-                        <uc:UpDownControl x:Name="updOne" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged" OnExportChanged="updOne_OnExportChanged" ></uc:UpDownControl>
+                        <uc:UpDownControl x:Name="updOne" Visibility="Collapsed" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged" OnExportChanged="updOne_OnExportChanged" ></uc:UpDownControl>
+                        <uc:ExportInput x:Name="expOnes" Lbl="1s" LostFocus="expOnes_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteFive"  NoteCount="5" Note="Images\Jpeg5.png" Symbol="Images\Layer_5.png"  Margin="0,0,0,8" Width="190" ></local:NoteUserControl>
-                        <uc:UpDownControl x:Name="updFive" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" ></uc:UpDownControl>
+                        <uc:UpDownControl x:Name="updFive" HorizontalAlignment="Center" Visibility="Collapsed" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" ></uc:UpDownControl>
+                        <uc:ExportInput LostFocus="expFives_LostFocus" x:Name="expFives" Lbl="5s" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
-                        <local:NoteUserControl x:Name="noteQtr" HorizontalAlignment="Center"  NoteCount="25" Note="Images\Jpeg25.png" Symbol="Images\c25.png" Margin="0,0,0,8"  Width="190"></local:NoteUserControl>
-                        <uc:UpDownControl x:Name="updQtr" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" Margin="30,0"></uc:UpDownControl>
+                        <local:NoteUserControl x:Name="noteQtr" HorizontalAlignment="Center" LostFocus="noteQtr_LostFocus"  NoteCount="25" Note="Images\Jpeg25.png" Symbol="Images\c25.png" Margin="0,0,0,8"  Width="190"></local:NoteUserControl>
+                        <uc:UpDownControl x:Name="updQtr" Visibility="Collapsed" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" Margin="30,0"></uc:UpDownControl>
+                        <uc:ExportInput x:Name="expQtrs" Lbl="25s" HorizontalAlignment="Left" LostFocus="expQtrs_LostFocus" MaxWidth="120" Width="120" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteHundred"  NoteCount="100" Note="Images\Jpeg100.png" Symbol="Images\c100.png" Margin="0,0,0,8"  Width="190" ></local:NoteUserControl>
-                        <uc:UpDownControl x:Name="updHundred" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" Margin="30,0"></uc:UpDownControl>
+                        <uc:UpDownControl x:Name="updHundred" Visibility="Collapsed" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" Margin="30,0"></uc:UpDownControl>
+                        <uc:ExportInput x:Name="expHundreds" Lbl="100s" LostFocus="expHundreds_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteTwoFifty"   NoteCount="250" Note="Images\Jpeg250.png" Symbol="Images\c250.png" Margin="0,0,0,8"  Width="190" ></local:NoteUserControl>
-                        <uc:UpDownControl x:Name="updTwoFifty" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  Margin="30,0" OnExportChanged="updOne_OnExportChanged"></uc:UpDownControl>
+                        <uc:UpDownControl x:Name="updTwoFifty" HorizontalAlignment="Center" Visibility="Collapsed" ThresholdReached="updOne_OnExportChanged"  Margin="30,0" OnExportChanged="updOne_OnExportChanged"></uc:UpDownControl>
+                        <uc:ExportInput x:Name="expTwoFifties" Lbl="250s" LostFocus="expTwoFifties_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,11,0,0">

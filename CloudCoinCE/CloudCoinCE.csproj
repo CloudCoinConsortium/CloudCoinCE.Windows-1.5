@@ -131,6 +131,9 @@
     <Compile Include="ProgressEventArgs.cs" />
     <Compile Include="SimpleLogger.cs" />
     <Compile Include="UserControls\ColorToSCBrushConverter.cs" />
+    <Compile Include="UserControls\ExportInput.xaml.cs">
+      <DependentUpon>ExportInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ImageButton.cs" />
     <Compile Include="UserControls\IncrementUserControl.xaml.cs">
       <DependentUpon>IncrementUserControl.xaml</DependentUpon>
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ExportInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

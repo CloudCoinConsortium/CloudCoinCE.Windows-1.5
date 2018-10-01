@@ -775,7 +775,7 @@ namespace CloudCoinCE
             if (importCoins.Count + BarCodeCoins.Count + qrCoins.Count == 0)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Cloudcoins (*.stack, *.jpg,*.jpeg)|*.stack;*.jpg;*.jpeg|Stack files (*.stack)|*.stack|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
+                openFileDialog.Filter = "Cloudcoins (*.stack, *.jpg,*.jpeg,*.csv)|*.stack;*.jpg;*.jpeg;*.csv|Stack files (*.stack)|*.stack|Jpeg files (*.jpg)|*.jpg|CSV files (*.csv)|*.csv|All files (*.*)|*.*";
                 openFileDialog.InitialDirectory = FS.ImportFolder.Substring(0,FS.ImportFolder.Length-1).Replace("\\\\","\\");
                 openFileDialog.Multiselect = true;
 
@@ -1148,6 +1148,52 @@ namespace CloudCoinCE
                     /* ... */
                     break;
             }
+
+        }
+
+        private void expFives_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void expOnes_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (expOnes.Count > onesTotalCount)
+                expOnes.Count = onesTotalCount;
+
+        }
+
+        private void expFives_LostFocus_1(object sender, RoutedEventArgs e)
+        {
+            if (expFives.Count > fivesTotalCount)
+                expFives.Count = fivesTotalCount;
+
+        }
+
+        private void noteQtr_LostFocus(object sender, RoutedEventArgs e)
+        {
+            
+
+        }
+
+        private void expQtrs_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (expQtrs.Count > qtrTotalCount)
+                expQtrs.Count = qtrTotalCount;
+        }
+
+        private void expHundreds_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (expHundreds.Count > hundredsCount)
+                expHundreds.Count = hundredsTotalCount;
+        }
+
+        private void expTwoFifties_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (expTwoFifties.Count > twoFiftiesTotalCount)
+                expTwoFifties.Count = twoFiftiesTotalCount;
+            
+           
 
         }
     }
