@@ -494,17 +494,17 @@ namespace CloudCoinCE
         {
             updateLog("CloudCoin Consumers Edition");
             updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.4");
-            updateLog("Used to Authenticate ,Store,Payout CloudCoins.");
-            updateLog("This Software is provided as is, with all faults, defects, errors and without warranty of any kind. Free from the CloudCoin Consortium.");
+            updateLog("Used to Authenticate, Store and Payout CloudCoins.");
+            updateLog("This Software is provided as is, with all faults, defects and errors, and without warranty of any kind. Provided free of charge by the CloudCoin Consortium.");
 
             printStarLine();
             UpdateCELog("                                                                  ");
             UpdateCELog("                   CloudCoin CE Edition                           ");
             UpdateCELog(String.Format("                      Version: {0}                        ", "1.5.0.0 "+DateTime.Now.ToString("dd.MMM.yyyy")));
-            UpdateCELog("          Used to Authenticate, Store and Payout CloudCoins       ");
-            UpdateCELog("      This Software is provided as is with all faults, defects    ");
+            UpdateCELog("          Used to Authenticate, Store and Payout CloudCoins.      ");
+            UpdateCELog("      This Software is provided as is, with all faults, defects   ");
             UpdateCELog("          and errors, and without warranty of any kind.           ");
-            UpdateCELog("                Free from the CloudCoin Consortium.               ");
+            UpdateCELog("                Provided free of charge by the CloudCoin Consortium.               ");
             //Console.Out.WriteLine("                            Network Number " + NetworkNumber + "                      ");
             printStarLine();
         }
