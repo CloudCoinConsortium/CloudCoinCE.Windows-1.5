@@ -62,6 +62,14 @@ namespace CloudCoinClient.CoreClasses
             {
                 if (fileName.Contains("jpeg") || fileName.Contains("jpg"))
                 {
+                    if(!File.Exists(TemplateFolder + fileName.Substring(22, fileName.Length - 22)))
+                    {
+                        using (FileStream fileStream = File.Create(TemplateFolder + fileName.Substring(22, fileName.Length - 22)))
+                        {
+                            Assembly.GetExecutingAssembly().GetManifestResourceStream(fileName).CopyTo(fileStream);
+                        }
+
+                    }
 
                 }
             }
@@ -95,7 +103,7 @@ namespace CloudCoinClient.CoreClasses
                 Directory.CreateDirectory(QRFolder);
                 Directory.CreateDirectory(BarCodeFolder);
                 Directory.CreateDirectory(ResponseFolder);
-
+                CopyTemplates();
             }
             catch (Exception e)
             {

@@ -142,8 +142,10 @@ namespace CloudCoinCE
 
             resumeImport();
 
-            this.PreviewKeyDown += MainWindow_PreviewKeyDown;
+            //this.PreviewKeyDown += MainWindow_PreviewKeyDown;
         }
+
+
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -488,19 +490,18 @@ namespace CloudCoinCE
         private static void printStarLine()
         {
             logger.Info("********************************************************************************");
-
         }
         private void printWelcome()
         {
             updateLog("CloudCoin Consumers Edition");
-            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.4");
+            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.6");
             updateLog("Used to Authenticate, Store and Payout CloudCoins.");
             updateLog("This Software is provided as is, with all faults, defects and errors, and without warranty of any kind. Provided free of charge by the CloudCoin Consortium.");
 
             printStarLine();
             UpdateCELog("                                                                  ");
             UpdateCELog("                   CloudCoin CE Edition                           ");
-            UpdateCELog(String.Format("                      Version: {0}                        ", "1.5.0.0 "+DateTime.Now.ToString("dd.MMM.yyyy")));
+            UpdateCELog(String.Format("                      Version: {0}                        ", "1.5.0.6 "+DateTime.Now.ToString("dd.MMM.yyyy")));
             UpdateCELog("          Used to Authenticate, Store and Payout CloudCoins.      ");
             UpdateCELog("      This Software is provided as is, with all faults, defects   ");
             UpdateCELog("          and errors, and without warranty of any kind.           ");
@@ -836,6 +837,10 @@ namespace CloudCoinCE
                 printStarLine();
                 await RAIDA.ProcessCoins(true);
                 ShowCoins();
+                new Thread(delegate () {
+                    Task.Delay(20000).ContinueWith(t => fix());
+                }).Start();
+
             }).Start();
         }
 
@@ -888,6 +893,7 @@ namespace CloudCoinCE
         }
         public void export()
         {
+            List<CloudCoin> exportedCoins = new List<CloudCoin>();
             UpdateCELog("  User Input : Withdraw");
             printStarLine();
             UpdateCELog("Starting CloudCoin Export.");
@@ -904,11 +910,11 @@ namespace CloudCoinCE
             //FS.LoadFileSystem();
             CalculateTotals();
             
-            int exp_1 = Convert.ToInt16(updOne.Value);
-            int exp_5 = Convert.ToInt16(updFive.Value);
-            int exp_25 = Convert.ToInt16(updQtr.Value);
-            int exp_100 = Convert.ToInt16(updHundred.Value);
-            int exp_250 = Convert.ToInt16(updTwoFifty.Value);
+            int exp_1 = Convert.ToInt16(expOnes.Count);
+            int exp_5 = Convert.ToInt16(expFives.Count);
+            int exp_25 = Convert.ToInt16(expQtrs.Count);
+            int exp_100 = Convert.ToInt16(expHundreds.Count);
+            int exp_250 = Convert.ToInt16(expTwoFifties.Count);
             //Warn if too many coins
 
             if (exp_1 + exp_5 + exp_25 + exp_100 + exp_250 == 0)
@@ -965,20 +971,37 @@ namespace CloudCoinCE
                         int tagrand = rnd.Next(999);
                         OutputFile = FS.ExportFolder + coin.FileName + tag + tagrand + ".jpg" ;
                     }//end if file exists
+                    string templatePath = FS.GetCoinTemplate(coin);
+                    if(!File.Exists(templatePath))
+                    {
+                        updateLog("Skipping Export of Coin sn "+ coin.sn + ". Template " + templatePath + " not found.");
+                        UpdateCELog("Skipping Export of Coin sn " + coin.sn + ". Template " + templatePath + " not found.");
 
+                        //exportCoins.Remove(coin);
+                        continue;
+                    }
                     bool fileGenerated = FS.WriteCoinToJpeg(coin, FS.GetCoinTemplate(coin), OutputFile, "");
                     if (fileGenerated)
                     {
                         updateLog("CloudCoin exported as Jpeg to " + OutputFile);
                         UpdateCELog("CloudCoin exported as Jpeg to " + OutputFile);
-
+                        exportedCoins.Add(coin);
                         Console.WriteLine("CloudCoin exported as Jpeg to " + OutputFile);
                         printStarLine();
                     }
                 }
 
-                FS.RemoveCoins(exportCoins, FS.BankFolder);
-                FS.RemoveCoins(exportCoins, FS.FrackedFolder);
+                if (exportedCoins.Count > 0)
+                {
+                    FS.RemoveCoins(exportedCoins, FS.BankFolder);
+                    FS.RemoveCoins(exportedCoins, FS.FrackedFolder);
+                }
+                if(exportedCoins.Count ==0)
+                {
+                    updateLog("No Coins to export. Please check the templates folder for Jpeg templates.");
+                    UpdateCELog("No Coins to export. Please check the templates folder for Jpeg templates.");
+
+                }
             }
 
             // Export Coins as Stack
@@ -1025,7 +1048,8 @@ namespace CloudCoinCE
             //RefreshCoins?.Invoke(this, new EventArgs());
             //updateLog("Exporting CloudCoins Completed.");
             ShowCoins();
-            Process.Start(FS.ExportFolder);
+            if((exportedCoins.Count>0 && exportJpegStack ==1) || exportJpegStack==2)
+                Process.Start(FS.ExportFolder);
             cmdExport.Content = "₡0";
             txtTag.Text = "";
             updOne.Value = 0;
@@ -1034,6 +1058,15 @@ namespace CloudCoinCE
             updHundred.Value = 0;
             updTwoFifty.Value = 0;
 
+            if((exportedCoins.Count > 0 && exportJpegStack == 1) || exportJpegStack == 2)
+            {
+                expOnes.Count = 0;
+                expFives.Count = 0;
+                expQtrs.Count = 0;
+                expHundreds.Count = 0;
+                expTwoFifties.Count = 0;
+            }
+            updateExportTotal();
             //MessageBox.Show("Export completed.", "Cloudcoins", MessageBoxButtons.OK);
         }// end export One
 
@@ -1055,8 +1088,8 @@ namespace CloudCoinCE
         int exportTotal = 0;
         public void updateExportTotal()
         {
-            exportTotal = updOne.val + (updFive.val *5) + (updQtr.val*25) + (updHundred.val*100) 
-                + (updTwoFifty.val*250);
+            exportTotal = expOnes.Count + (expFives.Count *5) + (expQtrs.Count *25) + (expHundreds.Count*100) 
+                + (expTwoFifties.Count * 250);
 			cmdExport.Content = exportTotal.ToString();
 
 			//lblExportTotal.Text = exportTotal.ToString();
@@ -1153,21 +1186,19 @@ namespace CloudCoinCE
 
         private void expFives_LostFocus(object sender, RoutedEventArgs e)
         {
+            if (expFives.Count > fivesTotalCount)
+                expFives.Count = fivesTotalCount;
 
+            expQtrs.Focus();
+            updateExportTotal();
         }
 
         private void expOnes_LostFocus(object sender, RoutedEventArgs e)
         {
             if (expOnes.Count > onesTotalCount)
                 expOnes.Count = onesTotalCount;
-
-        }
-
-        private void expFives_LostFocus_1(object sender, RoutedEventArgs e)
-        {
-            if (expFives.Count > fivesTotalCount)
-                expFives.Count = fivesTotalCount;
-
+            expFives.Focus();
+            updateExportTotal();
         }
 
         private void noteQtr_LostFocus(object sender, RoutedEventArgs e)
@@ -1180,21 +1211,41 @@ namespace CloudCoinCE
         {
             if (expQtrs.Count > qtrTotalCount)
                 expQtrs.Count = qtrTotalCount;
+            expHundreds.Focus();
+            updateExportTotal();
         }
 
         private void expHundreds_LostFocus(object sender, RoutedEventArgs e)
         {
             if (expHundreds.Count > hundredsCount)
                 expHundreds.Count = hundredsTotalCount;
+            expTwoFifties.Focus();
+            updateExportTotal();
         }
 
         private void expTwoFifties_LostFocus(object sender, RoutedEventArgs e)
         {
             if (expTwoFifties.Count > twoFiftiesTotalCount)
                 expTwoFifties.Count = twoFiftiesTotalCount;
-            
-           
+            updateExportTotal();
+            rdbJpeg.Focus();
 
+        }
+
+        private void txtLogs_LostFocus(object sender, RoutedEventArgs e)
+        {
+            expOnes.Focus();
+        }
+
+        private void rdbJpeg_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtTag.Focus();
+        }
+
+        private void txtTag_LostFocus(object sender, RoutedEventArgs e)
+        {
+            cmdExport.Focus();
+            updateExportTotal();
         }
     }
     public static class MyExtensions

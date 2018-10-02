@@ -200,7 +200,9 @@ namespace CloudCoinCore
 
             Debug.WriteLine("Detection Completed in : " + ts.TotalMilliseconds / 1000);
             updateLog("Detection Completed in : " + ts.TotalMilliseconds / 1000);
-            updateLog("****************************************************************************************************");
+
+            updateLog("********************************************************************************");
+
         }
 
 

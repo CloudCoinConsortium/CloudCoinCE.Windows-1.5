@@ -9,6 +9,7 @@ using Founders;
 using CloudCoinCE.Properties;
 using CloudCoinClient.CoreClasses;
 using CloudCoinCore;
+using System.Windows.Controls;
 
 namespace CloudCoinCE
 {
@@ -17,22 +18,26 @@ namespace CloudCoinCE
     /// </summary>
     public partial class App : Application
     {
-        
-      
-        
+
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
-           
+            EventManager.RegisterClassHandler(typeof(TextBox), UIElement.GotFocusEvent,
+                                             new RoutedEventHandler(SelectAllText), true);
+
             base.OnStartup(e);
         }
 
-        public static void UpdateCELog(string LogLine)
+        private static void SelectAllText(object sender, RoutedEventArgs e)
         {
-
+            var textBox = e.OriginalSource as TextBox;
+            if (textBox != null)
+                textBox.SelectAll();
         }
 
-     
-      
+
+
 
     }
 }

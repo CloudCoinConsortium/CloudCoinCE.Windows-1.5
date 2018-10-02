@@ -126,7 +126,7 @@
                 </DockPanel>
             </Border>
 
-            <RichTextBox Grid.Column="0" Margin="{StaticResource Margin.Main.Top}" Grid.Row="2" BorderBrush="#5a5fc9" BorderThickness="1" TextChanged="txtLogs_TextChanged" Foreground="White" x:Name="txtLogs" FontSize="18"  VerticalScrollBarVisibility="Visible" Width="645" MinWidth="400" Height="780" Background="{StaticResource LinearGradientBrush.TextBox}" Style="{DynamicResource RichTextBoxStyle_CloudCin}"/>
+            <RichTextBox Grid.Column="0" Margin="{StaticResource Margin.Main.Top}" Grid.Row="2" BorderBrush="#5a5fc9" BorderThickness="1" TextChanged="txtLogs_TextChanged" LostFocus="txtLogs_LostFocus" Foreground="White" x:Name="txtLogs" FontSize="18"  VerticalScrollBarVisibility="Visible" Width="645" MinWidth="400" Height="780" Background="{StaticResource LinearGradientBrush.TextBox}" Style="{DynamicResource RichTextBoxStyle_CloudCin}"/>
 
             <StackPanel  Margin="{StaticResource Margin.Main.Top}" Grid.Column="1" Grid.Row="2" Height="780" Orientation="Vertical">
                 <StackPanel Height="60" Orientation="Horizontal"  >
@@ -174,39 +174,39 @@
                     <StackPanel Orientation="Vertical" >
                         <local:NoteUserControl x:Name="noteOne" NoteCount="10" Note="Images\Jpeg1.png" Symbol="Images\Layer_1.png" Margin="0,0,0,8" Width="190"  ></local:NoteUserControl>
                         <uc:UpDownControl x:Name="updOne" Visibility="Collapsed" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged" OnExportChanged="updOne_OnExportChanged" ></uc:UpDownControl>
-                        <uc:ExportInput x:Name="expOnes" Lbl="1s" LostFocus="expOnes_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
+                        <uc:ExportInput x:Name="expOnes" Lbl="1s" LostFocus="expOnes_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" TabIndex="2" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteFive"  NoteCount="5" Note="Images\Jpeg5.png" Symbol="Images\Layer_5.png"  Margin="0,0,0,8" Width="190" ></local:NoteUserControl>
                         <uc:UpDownControl x:Name="updFive" HorizontalAlignment="Center" Visibility="Collapsed" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" ></uc:UpDownControl>
-                        <uc:ExportInput LostFocus="expFives_LostFocus" x:Name="expFives" Lbl="5s" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
+                        <uc:ExportInput LostFocus="expFives_LostFocus" x:Name="expFives" Lbl="5s" HorizontalAlignment="Left" MaxWidth="120" Width="120" TabIndex="3" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteQtr" HorizontalAlignment="Center" LostFocus="noteQtr_LostFocus"  NoteCount="25" Note="Images\Jpeg25.png" Symbol="Images\c25.png" Margin="0,0,0,8"  Width="190"></local:NoteUserControl>
                         <uc:UpDownControl x:Name="updQtr" Visibility="Collapsed" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" Margin="30,0"></uc:UpDownControl>
-                        <uc:ExportInput x:Name="expQtrs" Lbl="25s" HorizontalAlignment="Left" LostFocus="expQtrs_LostFocus" MaxWidth="120" Width="120" ></uc:ExportInput>
+                        <uc:ExportInput x:Name="expQtrs" Lbl="25s" HorizontalAlignment="Left" LostFocus="expQtrs_LostFocus" MaxWidth="120" Width="120" TabIndex="4" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteHundred"  NoteCount="100" Note="Images\Jpeg100.png" Symbol="Images\c100.png" Margin="0,0,0,8"  Width="190" ></local:NoteUserControl>
                         <uc:UpDownControl x:Name="updHundred" Visibility="Collapsed" HorizontalAlignment="Center" ThresholdReached="updOne_OnExportChanged"  OnExportChanged="updOne_OnExportChanged" Margin="30,0"></uc:UpDownControl>
-                        <uc:ExportInput x:Name="expHundreds" Lbl="100s" LostFocus="expHundreds_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
+                        <uc:ExportInput x:Name="expHundreds" Lbl="100s" LostFocus="expHundreds_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" TabIndex="5" ></uc:ExportInput>
                     </StackPanel>
                     <Border Width="{StaticResource gapWidth}" />
                     <StackPanel Orientation="Vertical">
                         <local:NoteUserControl x:Name="noteTwoFifty"   NoteCount="250" Note="Images\Jpeg250.png" Symbol="Images\c250.png" Margin="0,0,0,8"  Width="190" ></local:NoteUserControl>
                         <uc:UpDownControl x:Name="updTwoFifty" HorizontalAlignment="Center" Visibility="Collapsed" ThresholdReached="updOne_OnExportChanged"  Margin="30,0" OnExportChanged="updOne_OnExportChanged"></uc:UpDownControl>
-                        <uc:ExportInput x:Name="expTwoFifties" Lbl="250s" LostFocus="expTwoFifties_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" ></uc:ExportInput>
+                        <uc:ExportInput x:Name="expTwoFifties" Lbl="250s" LostFocus="expTwoFifties_LostFocus" HorizontalAlignment="Left" MaxWidth="120" Width="120" TabIndex="6" ></uc:ExportInput>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
                     <Border Width="880" Height="60" CornerRadius="{StaticResource CornerRadius.RoundLeft}" Background="#34317a" BorderBrush="#5a5fc9" BorderThickness="1">
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton x:Name="rdbJpeg" Margin="50,0,140,0" Content="JPEG" FontSize="20" Style="{DynamicResource RadioButtonStyle_CloudCoin}" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"></RadioButton>
+                            <RadioButton x:Name="rdbJpeg" Margin="50,0,140,0" Content="JPEG" FontSize="20" LostFocus="rdbJpeg_LostFocus" Style="{DynamicResource RadioButtonStyle_CloudCoin}" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"></RadioButton>
                             <RadioButton x:Name="rdbStack" IsChecked="True" Content="Stack" FontSize="20" Style="{DynamicResource RadioButtonStyle_CloudCoin}" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"></RadioButton>
-                            <TextBox Width="330" Height="48" Margin="115,0,30,0" x:Name="txtTag" MaxLength="16" TextAlignment="Left" FontSize="29" Padding="10,0,10,0" Foreground="#aba1fe"  BorderBrush="#3b3f84" BorderThickness="1" Background="#2e2e69" Style="{DynamicResource TextBoxStyle}"></TextBox>
+                            <TextBox Width="330" Height="48" Margin="115,0,30,0" x:Name="txtTag" LostFocus="txtTag_LostFocus" MaxLength="16" TextAlignment="Left" FontSize="29" Padding="10,0,10,0" Foreground="#aba1fe"  BorderBrush="#3b3f84" BorderThickness="1" Background="#2e2e69" Style="{DynamicResource TextBoxStyle}"></TextBox>
                         </StackPanel>
 
                     </Border>
