@@ -296,7 +296,6 @@ namespace CloudCoinCore
                             coin.response[k] = raida.nodes[k].MultiResponse.responses[j];
                             coin.pown += coin.response[k].outcome.Substring(0, 1);
                         }
-                       // coin.pown = "ppppppppppppppppppppppppp";
                         int countp = coin.response.Where(x => x.outcome == "pass").Count();
                         int countf = coin.response.Where(x => x.outcome == "fail").Count();
                         coin.PassCount = countp;
@@ -316,8 +315,8 @@ namespace CloudCoinCore
                     pge.MinorProgress = (CoinCount - 1) * 100 / totalCoinCount;
                     Debug.WriteLine("Minor Progress- " + pge.MinorProgress);
                     raida.OnProgressChanged(pge);
-                    FS.WriteCoin(coins, FS.DetectedFolder, false);
-                    FS.RemoveCoins(coins, FS.PreDetectFolder);
+                    FS.WriteCoin(coins, FS.DetectedFolder, true);
+                    FS.RemoveCoinsByFileName(coins, FS.PreDetectFolder);
 
                     MainWindow.UpdateCELog(pge.MinorProgress + " % of Coins on Network " + NetworkNumber + " processed.");
                     //FS.WriteCoin(coins, FS.DetectedFolder);
@@ -374,13 +373,13 @@ namespace CloudCoinCore
 
             if(failedCoins.Count()>0)
                 FS.WriteCoin(failedCoins, FS.CounterfeitFolder, false, true);
-            FS.MoveCoins(lostCoins, FS.DetectedFolder, FS.LostFolder);
-            FS.MoveCoins(suspectCoins, FS.DetectedFolder, FS.SuspectFolder);
+            FS.MoveCoinsByFileName(lostCoins, FS.DetectedFolder, FS.LostFolder);
+            FS.MoveCoinsByFileName(suspectCoins, FS.DetectedFolder, FS.SuspectFolder);
 
             // Clean up Detected Folder
-            FS.RemoveCoins(failedCoins, FS.DetectedFolder);
-            FS.RemoveCoins(lostCoins, FS.DetectedFolder);
-            FS.RemoveCoins(suspectCoins, FS.DetectedFolder);
+            FS.RemoveCoinsByFileName(failedCoins, FS.DetectedFolder);
+            FS.RemoveCoinsByFileName(lostCoins, FS.DetectedFolder);
+            FS.RemoveCoinsByFileName(suspectCoins, FS.DetectedFolder);
 
             FS.MoveImportedFiles();
 

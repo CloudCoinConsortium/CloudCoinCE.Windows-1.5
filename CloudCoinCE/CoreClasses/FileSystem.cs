@@ -160,6 +160,7 @@ namespace CloudCoinClient.CoreClasses
 
         public override void DetectPreProcessing()
         {
+            Console.WriteLine("Import count - "+ importCoins.Count());
             foreach (var coin in importCoins)
             {
                 string fileName = GetCoinName(coin.FileName);
@@ -175,7 +176,12 @@ namespace CloudCoinClient.CoreClasses
                 serializer.Converters.Add(new JavaScriptDateTimeConverter());
                 serializer.NullValueHandling = NullValueHandling.Ignore;
                 Stack stack = new Stack(coin);
-                using (StreamWriter sw = new StreamWriter(PreDetectFolder + fileName + ".stack"))
+                string fName = PreDetectFolder + fileName + ".stack";
+                if (File.Exists(fName))
+                {
+                    fName = PreDetectFolder + fileName + Utils.RandomString(16) + ".stack";
+                }
+                using (StreamWriter sw = new StreamWriter(fName))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
                     serializer.Serialize(writer, stack);

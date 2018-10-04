@@ -178,13 +178,17 @@ namespace CloudCoinCore
                 {
                     var coins = Utils.LoadJson(files[i]);
                     if (coins != null)
+                    {
+                        coins.ToList().ForEach(x => x.ExistingFileName = files[i]);
                         folderCoins.AddRange(coins);
+                    }
                 }
                 if (ext == ".jpeg" || ext == ".jpg")
                 {
                     try
                     {
                         var coin = importJPEG(files[i]);
+                        coin.ExistingFileName = files[i];
                         folderCoins.Add(coin);
                     }
                     catch (Exception e)
@@ -204,6 +208,7 @@ namespace CloudCoinCore
                         CsvCoins.Add(CloudCoin.FromCSV(line));
                     }
                     CsvCoins.RemoveAll(item => item == null);
+                    CsvCoins.ForEach(x => x.ExistingFileName = files[i]);
                     folderCoins.AddRange(CsvCoins);
                 }
             };
@@ -524,13 +529,58 @@ namespace CloudCoinCore
 
             }
         }
+        public void RemoveCoinsByFileName(IEnumerable<CloudCoin> coins, string folder)
+        {
 
+            foreach (var coin in coins)
+            {
+                File.Delete((coin.ExistingFileName) );
+
+            }
+        }
         public void RemoveCoins(IEnumerable<CloudCoin> coins, string folder, string extension)
         {
 
             foreach (var coin in coins)
             {
                 File.Delete(folder + (coin.FileName) + extension);
+
+            }
+        }
+
+        public void MoveCoinsByFileName(IEnumerable<CloudCoin> coins, string sourceFolder, string targetFolder, bool replaceCoins = false)
+        {
+            var folderCoins = LoadFolderCoins(targetFolder);
+
+            foreach (var coin in coins)
+            {
+                string fileName = (coin.ExistingFileName);
+                int coinExists = (from x in folderCoins
+                                  where x.sn == coin.sn
+                                  select x).Count();
+                if (File.Exists(coin.ExistingFileName) && !replaceCoins)
+                {
+                    string suffix = Utils.RandomString(16);
+                    fileName += suffix.ToLower();
+                }
+                try
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                    serializer.NullValueHandling = NullValueHandling.Ignore;
+                    Stack stack = new Stack(coin);
+                    using (StreamWriter sw = new StreamWriter(targetFolder + fileName ))
+                    using (JsonWriter writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, stack);
+                    }
+                    File.Delete(sourceFolder + (coin.FileName) + ".stack");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
 
             }
         }
@@ -561,7 +611,7 @@ namespace CloudCoinCore
                     {
                         serializer.Serialize(writer, stack);
                     }
-                    File.Delete(sourceFolder + (coin.FileName) + ".stack");
+                    File.Delete(sourceFolder + coin.ExistingFileName);
                 }
                 catch (Exception e)
                 {
@@ -676,15 +726,22 @@ namespace CloudCoinCore
                 }
                 return;
             }
-            var folderCoins = LoadFolderCoins(folder);
 
+            var folderCoins = LoadFolderCoins(folder);
+            List<string> addedFiles = new List<string>();
             foreach (var coin in coins)
             {
+                int existingFiles = 0;
+
+                existingFiles = (from x in addedFiles
+                                 where x == (coin.FileName + ".stack")
+                                 select x).Count();
+
                 string fileName = coin.FileName;
                 int coinExists = (from x in folderCoins
                                   where x.sn == coin.sn
                                   select x).Count();
-                if (coinExists > 0 && replaceExisting)
+                if ((coinExists>0|| existingFiles > 0) && replaceExisting)
                 {
                     string suffix = Utils.RandomString(16);
                     fileName += suffix.ToLower();
@@ -698,6 +755,7 @@ namespace CloudCoinCore
                 {
                     serializer.Serialize(writer, stack);
                 }
+                addedFiles.Add(fileName + ".stack");
 
             }
         }

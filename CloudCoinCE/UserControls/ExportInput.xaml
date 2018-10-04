@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <Label Foreground="#aba1fe" FontSize="22" x:Name="lblName">1s</Label>
-            <TextBox x:Name="txtCount" TextChanged="txtCount_TextChanged" GotFocus="txtCount_GotFocus" MaxLength="4" Text="0" TextAlignment="Left" FontSize="29" Padding="10,0,10,0" Foreground="#aba1fe"  BorderBrush="#3b3f84" BorderThickness="1" Background="#2e2e69" Style="{DynamicResource TextBoxStyle}"></TextBox>
+            <TextBox x:Name="txtCount" TextChanged="txtCount_TextChanged" GotFocus="txtCount_GotFocus" PreviewTextInput="NumberValidationTextBox" MaxLength="4" Text="0" TextAlignment="Left" FontSize="29" Padding="10,0,10,0" Foreground="#aba1fe"  BorderBrush="#3b3f84" BorderThickness="1" Background="#2e2e69" Style="{DynamicResource TextBoxStyle}"></TextBox>
         </StackPanel>
     </Grid>
 </UserControl>
