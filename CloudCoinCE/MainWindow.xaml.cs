@@ -1119,9 +1119,12 @@ namespace CloudCoinCE
         private void cmdWorkspace_Click(object sender, RoutedEventArgs e)
         {
             string sMessageBoxText = "Do you want to Change CloudCoin Workspace? This will change the working directory and you will see 0 coins. Your coins will not be lost however. You will be able to see them again when you revert to old workspace.";
+
+            sMessageBoxText = "CloudCoin Workspace directory will be changed and you will have 0 CloudCoins in new Workspace. Your current CoudCoins will stay in '" + Properties.Settings.Default.WorkSpace + "' workspace and you will be able to access them when you select '" + Properties.Settings.Default.WorkSpace + "' for your workspace again. Do you want to continue?";
+
             string sCaption = "Change Workspace";
 
-            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
 
             MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);

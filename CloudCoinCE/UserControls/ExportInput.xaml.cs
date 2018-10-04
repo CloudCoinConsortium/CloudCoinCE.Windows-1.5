@@ -53,7 +53,7 @@ namespace CloudCoinCE.UserControls
             }
             catch(Exception ex)
             {
-
+               // Count = 0;
             }
         }
     }
