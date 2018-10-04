@@ -56,5 +56,20 @@ namespace CloudCoinCE.UserControls
                // Count = 0;
             }
         }
+
+        private void txtCount_GotFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Convert.ToInt16(txtCount.Text) == 0)
+                {
+                    txtCount.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

@@ -1191,7 +1191,7 @@ namespace CloudCoinCE
         {
             if (expFives.Count > fivesTotalCount)
                 expFives.Count = fivesTotalCount;
-
+            if (expFives.txtCount.Text == "") expFives.txtCount.Text = "0";
             expQtrs.Focus();
             updateExportTotal();
         }
@@ -1200,6 +1200,8 @@ namespace CloudCoinCE
         {
             if (expOnes.Count > onesTotalCount)
                 expOnes.Count = onesTotalCount;
+            if (expOnes.txtCount.Text == "") expOnes.txtCount.Text = "0";
+
             expFives.Focus();
             updateExportTotal();
         }
@@ -1214,6 +1216,8 @@ namespace CloudCoinCE
         {
             if (expQtrs.Count > qtrTotalCount)
                 expQtrs.Count = qtrTotalCount;
+            if (expQtrs.txtCount.Text == "") expQtrs.txtCount.Text = "0";
+
             expHundreds.Focus();
             updateExportTotal();
         }
@@ -1222,6 +1226,8 @@ namespace CloudCoinCE
         {
             if (expHundreds.Count > hundredsCount)
                 expHundreds.Count = hundredsTotalCount;
+            if (expHundreds.txtCount.Text == "") expHundreds.txtCount.Text = "0";
+
             expTwoFifties.Focus();
             updateExportTotal();
         }
@@ -1230,6 +1236,8 @@ namespace CloudCoinCE
         {
             if (expTwoFifties.Count > twoFiftiesTotalCount)
                 expTwoFifties.Count = twoFiftiesTotalCount;
+            if (expTwoFifties.txtCount.Text == "") expTwoFifties.txtCount.Text = "0";
+
             updateExportTotal();
             rdbJpeg.Focus();
 
