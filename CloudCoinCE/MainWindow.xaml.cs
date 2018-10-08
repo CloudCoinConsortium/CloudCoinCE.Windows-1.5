@@ -134,6 +134,12 @@ namespace CloudCoinCE
 
             ShowCoins();
 
+            noteOne.NoteCount = "10000";
+            noteFive.NoteCount = "5";
+            noteQtr.NoteCount = "10";
+            noteHundred.NoteCount = "100";
+            noteTwoFifty.NoteCount = "250";
+
             new Thread(delegate () {
                 Task.Delay(20000).ContinueWith(t => fix());
                 //fix();
