@@ -69,58 +69,58 @@ namespace CloudCoinCore
         {
             List<CloudCoin> folderCoins = new List<CloudCoin>();
 
-            if (format == Formats.BarCode)
-            {
-                string[] allowedExtensions = { "jpg"};
-                var files = Directory
-               .GetFiles(folder)
-               .Where(file => allowedExtensions.Any(file.ToLower().EndsWith))
-               .ToList();
+            //if (format == Formats.BarCode)
+            //{
+            //    string[] allowedExtensions = { "jpg"};
+            //    var files = Directory
+            //   .GetFiles(folder)
+            //   .Where(file => allowedExtensions.Any(file.ToLower().EndsWith))
+            //   .ToList();
 
-                string[] fnames = new string[files.Count()];
-                for (int i = 0; i < files.Count(); i++)
-                {
-                    fnames[i] = Path.GetFileName(files.ElementAt(i));
-                    string ext = Path.GetExtension(files.ElementAt(i));
+            //    string[] fnames = new string[files.Count()];
+            //    for (int i = 0; i < files.Count(); i++)
+            //    {
+            //        fnames[i] = Path.GetFileName(files.ElementAt(i));
+            //        string ext = Path.GetExtension(files.ElementAt(i));
 
-                    try
-                    {
-                        var coin = ReadBARCode(files[i]);
-                        folderCoins.Add(coin);
-                    }
-                    catch (Exception e)
-                    {
+            //        try
+            //        {
+            //            var coin = ReadBARCode(files[i]);
+            //            folderCoins.Add(coin);
+            //        }
+            //        catch (Exception e)
+            //        {
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
 
-            if (format == Formats.QRCode)
-            {
-                string[] allowedExtensions = { "jpg" };
+            //if (format == Formats.QRCode)
+            //{
+            //    string[] allowedExtensions = { "jpg" };
 
-                var files = Directory
-               .GetFiles(folder)
-               .Where(file => allowedExtensions.Any(file.ToLower().EndsWith))
-               .ToList();
+            //    var files = Directory
+            //   .GetFiles(folder)
+            //   .Where(file => allowedExtensions.Any(file.ToLower().EndsWith))
+            //   .ToList();
 
-                string[] fnames = new string[files.Count()];
-                for (int i = 0; i < files.Count(); i++)
-                {
-                    fnames[i] = Path.GetFileName(files.ElementAt(i));
-                    string ext = Path.GetExtension(files.ElementAt(i));
+            //    string[] fnames = new string[files.Count()];
+            //    for (int i = 0; i < files.Count(); i++)
+            //    {
+            //        fnames[i] = Path.GetFileName(files.ElementAt(i));
+            //        string ext = Path.GetExtension(files.ElementAt(i));
 
-                    try
-                    {
-                        var coin = ReadQRCode(files[i]);
-                        folderCoins.Add(coin);
-                    }
-                    catch (Exception e)
-                    {
+            //        try
+            //        {
+            //            var coin = ReadQRCode(files[i]);
+            //            folderCoins.Add(coin);
+            //        }
+            //        catch (Exception e)
+            //        {
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
             if (format == Formats.CSV)
             {
                 string[] allowedExtensions = { "csv" };

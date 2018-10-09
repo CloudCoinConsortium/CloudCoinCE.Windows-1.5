@@ -100,8 +100,8 @@ namespace CloudCoinClient.CoreClasses
                 Directory.CreateDirectory(RequestsFolder);
                 Directory.CreateDirectory(DangerousFolder);
                 Directory.CreateDirectory(LogsFolder);
-                Directory.CreateDirectory(QRFolder);
-                Directory.CreateDirectory(BarCodeFolder);
+                //Directory.CreateDirectory(QRFolder);
+                //Directory.CreateDirectory(BarCodeFolder);
                 Directory.CreateDirectory(ResponseFolder);
                 CopyTemplates();
             }
@@ -121,13 +121,13 @@ namespace CloudCoinClient.CoreClasses
         {
             importCoins = LoadFolderCoins(ImportFolder);
 
-            var qrCoins = LoadCoinsByFormat(ImportFolder + Path.DirectorySeparatorChar + "QrCodes", Formats.QRCode);
-            var BarCodeCoins = LoadCoinsByFormat(ImportFolder + Path.DirectorySeparatorChar + "Barcodes", Formats.BarCode);
+            //var qrCoins = LoadCoinsByFormat(ImportFolder + Path.DirectorySeparatorChar + "QrCodes", Formats.QRCode);
+            //var BarCodeCoins = LoadCoinsByFormat(ImportFolder + Path.DirectorySeparatorChar + "Barcodes", Formats.BarCode);
 
             // Add Additional File formats if present
             //importCoins = importCoins.Concat(csvCoins);
-            importCoins =  importCoins.Concat(BarCodeCoins);
-            importCoins = importCoins.Concat(qrCoins);
+            //importCoins =  importCoins.Concat(BarCodeCoins);
+            //importCoins = importCoins.Concat(qrCoins);
             
             Debug.WriteLine("Count -" + importCoins.Count());
 
@@ -303,27 +303,27 @@ namespace CloudCoinClient.CoreClasses
                 MoveFile(files[i], ImportedFolder + Path.DirectorySeparatorChar + Path.GetFileName(files[i]), FileMoveOptions.Rename);
             }
 
-            var filesqr = Directory
-              .GetFiles(ImportFolder + Path.DirectorySeparatorChar + "QrCodes")
-              .Where(file => CloudCoinCore.Config.allowedExtensions.Any(file.ToLower().EndsWith))
-              .ToList();
+            //var filesqr = Directory
+            //  .GetFiles(ImportFolder + Path.DirectorySeparatorChar + "QrCodes")
+            //  .Where(file => CloudCoinCore.Config.allowedExtensions.Any(file.ToLower().EndsWith))
+            //  .ToList();
 
-            string[] fnamesqr = new string[filesqr.Count()];
-            for (int i = 0; i < filesqr.Count(); i++)
-            {
-                MoveFile(filesqr[i], ImportedFolder + Path.DirectorySeparatorChar + Path.GetFileName(filesqr[i]), FileMoveOptions.Rename);
-            }
+            //string[] fnamesqr = new string[filesqr.Count()];
+            //for (int i = 0; i < filesqr.Count(); i++)
+            //{
+            //    MoveFile(filesqr[i], ImportedFolder + Path.DirectorySeparatorChar + Path.GetFileName(filesqr[i]), FileMoveOptions.Rename);
+            //}
 
-            var filesbar = Directory
-              .GetFiles(ImportFolder + Path.DirectorySeparatorChar + "Barcodes")
-              .Where(file => CloudCoinCore.Config.allowedExtensions.Any(file.ToLower().EndsWith))
-              .ToList();
+            //var filesbar = Directory
+            //  .GetFiles(ImportFolder + Path.DirectorySeparatorChar + "Barcodes")
+            //  .Where(file => CloudCoinCore.Config.allowedExtensions.Any(file.ToLower().EndsWith))
+            //  .ToList();
 
-            string[] fnamesbar = new string[filesbar.Count()];
-            for (int i = 0; i < filesbar.Count(); i++)
-            {
-                MoveFile(filesbar[i], ImportedFolder + Path.DirectorySeparatorChar + Path.GetFileName(filesbar[i]), FileMoveOptions.Rename);
-            }
+            //string[] fnamesbar = new string[filesbar.Count()];
+            //for (int i = 0; i < filesbar.Count(); i++)
+            //{
+            //    MoveFile(filesbar[i], ImportedFolder + Path.DirectorySeparatorChar + Path.GetFileName(filesbar[i]), FileMoveOptions.Rename);
+            //}
         }
 
         public override bool WriteCoinToJpeg(CloudCoin cloudCoin, string TemplateFile, string OutputFile, string tag)

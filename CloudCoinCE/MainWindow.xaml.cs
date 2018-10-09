@@ -134,11 +134,11 @@ namespace CloudCoinCE
 
             ShowCoins();
 
-            noteOne.NoteCount = "10000";
-            noteFive.NoteCount = "5";
-            noteQtr.NoteCount = "10";
-            noteHundred.NoteCount = "100";
-            noteTwoFifty.NoteCount = "250";
+            //noteOne.NoteCount = "10000";
+            //noteFive.NoteCount = "5";
+            //noteQtr.NoteCount = "10";
+            //noteHundred.NoteCount = "100";
+            //noteTwoFifty.NoteCount = "250";
 
             new Thread(delegate () {
                 Task.Delay(20000).ContinueWith(t => fix());
@@ -500,7 +500,7 @@ namespace CloudCoinCE
         private void printWelcome()
         {
             updateLog("CloudCoin Consumers Edition");
-            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.6");
+            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.7");
             updateLog("Used to Authenticate, Store and Payout CloudCoins.");
             updateLog("This Software is provided as is, with all faults, defects and errors, and without warranty of any kind. Provided free of charge by the CloudCoin Consortium.");
 
@@ -769,8 +769,8 @@ namespace CloudCoinCE
             int count = FS.LoadFolderCoins(FS.ImportFolder).Count();
             var importCoins = FS.LoadFolderCoins(FS.ImportFolder);
 
-            var qrCoins = FS.LoadCoinsByFormat(FS.ImportFolder + System.IO.Path.DirectorySeparatorChar + "QrCodes", Formats.QRCode);
-            var BarCodeCoins = FS.LoadCoinsByFormat(FS.ImportFolder + System.IO.Path.DirectorySeparatorChar + "Barcodes", Formats.BarCode);
+            //var qrCoins = FS.LoadCoinsByFormat(FS.ImportFolder + System.IO.Path.DirectorySeparatorChar + "QrCodes", Formats.QRCode);
+            //var BarCodeCoins = FS.LoadCoinsByFormat(FS.ImportFolder + System.IO.Path.DirectorySeparatorChar + "Barcodes", Formats.BarCode);
 
             // Add Additional File formats if present
             //importCoins = importCoins.Concat(csvCoins);
@@ -779,7 +779,7 @@ namespace CloudCoinCE
 
            
 
-            if (importCoins.Count + BarCodeCoins.Count + qrCoins.Count == 0)
+            if (importCoins.Count  == 0)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Cloudcoins (*.stack, *.jpg,*.jpeg,*.csv)|*.stack;*.jpg;*.jpeg;*.csv|Stack files (*.stack)|*.stack|Jpeg files (*.jpg)|*.jpg|CSV files (*.csv)|*.csv|All files (*.*)|*.*";
