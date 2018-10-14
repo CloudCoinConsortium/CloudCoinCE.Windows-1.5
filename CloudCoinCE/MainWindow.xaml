@@ -206,7 +206,7 @@
                         <StackPanel Orientation="Horizontal">
                             <RadioButton x:Name="rdbJpeg" Margin="50,0,140,0" Content="JPEG" FontSize="20" LostFocus="rdbJpeg_LostFocus" Style="{DynamicResource RadioButtonStyle_CloudCoin}" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"></RadioButton>
                             <RadioButton x:Name="rdbStack" IsChecked="True" Content="Stack" FontSize="20" Style="{DynamicResource RadioButtonStyle_CloudCoin}" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"></RadioButton>
-                            <TextBox Width="330" Height="48" Margin="115,0,30,0" x:Name="txtTag" LostFocus="txtTag_LostFocus" MaxLength="16" TextAlignment="Left" FontSize="24" Padding="10,0,10,0" Foreground="#aba1fe"  BorderBrush="#3b3f84" BorderThickness="1" Background="#2e2e69" Style="{DynamicResource TextBoxStyle}"></TextBox>
+                            <TextBox Width="330" Height="48" Margin="115,0,30,0" x:Name="txtTag" LostFocus="txtTag_LostFocus" PreviewTextInput="txtTag_PreviewTextInput" MaxLength="16" TextAlignment="Left" FontSize="24" Padding="10,0,10,0" Foreground="#aba1fe"  BorderBrush="#3b3f84" BorderThickness="1" Background="#2e2e69" Style="{DynamicResource TextBoxStyle}"></TextBox>
                         </StackPanel>
 
                     </Border>

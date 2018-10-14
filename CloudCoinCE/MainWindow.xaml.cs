@@ -24,6 +24,7 @@ using CloudCoinClient.CoreClasses;
 using CloudCoinCore;
 using ConsoleTables;
 using System.Windows.Threading;
+using System.Text.RegularExpressions;
 
 namespace CloudCoinCE
 {
@@ -147,10 +148,19 @@ namespace CloudCoinCE
             }).Start();
 
             resumeImport();
-
+            //txtTag.KeyDown += TxtTag_KeyDown;
             //this.PreviewKeyDown += MainWindow_PreviewKeyDown;
         }
 
+        private void textBox1_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            // Check for a naughty character in the KeyDown event.
+            if (System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), @"[^0-9^+^\-^\/^\*^\(^\)]"))
+            {
+                // Stop the character from being entered into the control since it is illegal.
+                e.Handled = true;
+            }
+        }
 
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -500,14 +510,14 @@ namespace CloudCoinCE
         private void printWelcome()
         {
             updateLog("CloudCoin Consumers Edition");
-            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.7");
+            updateLog("Version WinCE-" +  DateTime.Now.ToString("dd-MMM-yyyy") +"-v1.5.0.8");
             updateLog("Used to Authenticate, Store and Payout CloudCoins.");
             updateLog("This Software is provided as is, with all faults, defects and errors, and without warranty of any kind. Provided free of charge by the CloudCoin Consortium.");
 
             printStarLine();
             UpdateCELog("                                                                  ");
             UpdateCELog("                   CloudCoin CE Edition                           ");
-            UpdateCELog(String.Format("                      Version: {0}                        ", "1.5.0.6 "+DateTime.Now.ToString("dd.MMM.yyyy")));
+            UpdateCELog(String.Format("                      Version: {0}                        ", "1.5.0.8 "+DateTime.Now.ToString("dd.MMM.yyyy")));
             UpdateCELog("          Used to Authenticate, Store and Payout CloudCoins.      ");
             UpdateCELog("      This Software is provided as is, with all faults, defects   ");
             UpdateCELog("          and errors, and without warranty of any kind.           ");
@@ -1248,7 +1258,7 @@ namespace CloudCoinCE
             rdbJpeg.Focus();
 
         }
-
+        string regexp = "^[a - zA - Z0 - 9 - _] +$";
         private void txtLogs_LostFocus(object sender, RoutedEventArgs e)
         {
             expOnes.Focus();
@@ -1263,6 +1273,14 @@ namespace CloudCoinCE
         {
             cmdExport.Focus();
             updateExportTotal();
+        }
+
+
+        private void txtTag_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex(@"^[a-zA-Z0-9_-]+$");
+            e.Handled = !regex.IsMatch(e.Text);
+
         }
     }
     public static class MyExtensions

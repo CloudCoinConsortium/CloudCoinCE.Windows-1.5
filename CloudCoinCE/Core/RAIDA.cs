@@ -341,6 +341,9 @@ namespace CloudCoinCore
             detectedCoins.ForEach(x => x.SortToFolder());
             updateLog("Grading Coins Completed.");
 
+           // detectedCoins.ForEach(x => x.folder = FS.SuspectFolder);
+
+
             var passedCoins = (from x in detectedCoins
                                where x.folder == FS.BankFolder
                                select x).ToList();

@@ -554,14 +554,15 @@ namespace CloudCoinCore
 
             foreach (var coin in coins)
             {
-                string fileName = (coin.ExistingFileName);
+                string fileName = targetFolder + Path.GetFileName(coin.ExistingFileName);
                 int coinExists = (from x in folderCoins
                                   where x.sn == coin.sn
                                   select x).Count();
-                if (File.Exists(coin.ExistingFileName) && !replaceCoins)
+                string targetFile = targetFolder + Path.GetFileName(coin.ExistingFileName);
+                if (File.Exists(targetFile) && !replaceCoins)
                 {
                     string suffix = Utils.RandomString(16);
-                    fileName += suffix.ToLower();
+                    fileName = targetFolder + Path.GetFileNameWithoutExtension(coin.ExistingFileName) + suffix.ToLower();
                 }
                 try
                 {
@@ -569,12 +570,12 @@ namespace CloudCoinCore
                     serializer.Converters.Add(new JavaScriptDateTimeConverter());
                     serializer.NullValueHandling = NullValueHandling.Ignore;
                     Stack stack = new Stack(coin);
-                    using (StreamWriter sw = new StreamWriter(targetFolder + fileName ))
+                    using (StreamWriter sw = new StreamWriter(fileName ))
                     using (JsonWriter writer = new JsonTextWriter(sw))
                     {
                         serializer.Serialize(writer, stack);
                     }
-                    File.Delete(sourceFolder + (coin.FileName) + ".stack");
+                    File.Delete(coin.ExistingFileName);
                 }
                 catch (Exception e)
                 {
@@ -595,11 +596,11 @@ namespace CloudCoinCore
                 int coinExists = (from x in folderCoins
                                   where x.sn == coin.sn
                                   select x).Count();
-                if (coinExists > 0 && !replaceCoins)
-                {
-                    string suffix = Utils.RandomString(16);
-                    fileName += suffix.ToLower();
-                }
+                //if (coinExists > 0 && !replaceCoins)
+                //{
+                //    string suffix = Utils.RandomString(16);
+                //    fileName += suffix.ToLower();
+                //}
                 try
                 {
                     JsonSerializer serializer = new JsonSerializer();
@@ -611,7 +612,7 @@ namespace CloudCoinCore
                     {
                         serializer.Serialize(writer, stack);
                     }
-                    File.Delete(sourceFolder + coin.ExistingFileName);
+                    File.Delete(coin.ExistingFileName);
                 }
                 catch (Exception e)
                 {
